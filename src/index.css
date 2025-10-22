@@ -1,0 +1,4 @@
+
+body {
+  @apply bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen;
+}

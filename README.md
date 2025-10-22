@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# Mood Gallery — React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma galeria de moods desenvolvida com **React, TypeScript e Vite**, com:
 
-Currently, two official plugins are available:
+- Seleção de moods (`happy`, `calm`, `creative`, `introspective`)  
+- Galeria de imagens com fallback automático  
+- Mobile: carrossel/swiper com bullets de navegação  
+- Desktop: grid de imagens simples  
+- Modo claro/escuro (botão de sol/lua)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Estrutura do projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Mood-Project/
+├─ assets
+├─ src/
+│ ├─ components/
+│ │ ├─ Header.tsx
+│ │ ├─ MoodSelector.tsx
+│ │ ├─ index.ts
+│ │ └─ Gallery.tsx
+│ ├─ data/
+│ │ ├─ moods.ts <-- define arrays de imagens por mood
+│ ├─ mocks/
+│ │ ├─ swiper.d.ts
+│ ├─ App.tsx
+│ ├─ index.css
+│ └─ main.tsx
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Como funciona a galeria
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Mobile (Swiper / Carrossel)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Cada slide ocupa **100% da largura da tela**
+- Altura padrão: **250px** (pode ajustar)
+- Bullets de navegação automáticos
+- Autoplay a cada 3 segundos
+- Fallback de imagem caso alguma URL falhe
+
+![MobileDarkMode](public\localhost_5173_(iPhone 14 Pro Max) (1).png)
+![!MobileLightMode](public\localhost_5173_(iPhone 14 Pro Max).png)
+
+### Desktop (Grid de imagens)
+
+- Cards de **200x250px**  
+- Layout em flex-wrap, gap de 10px  
+- Fallback de imagem caso alguma URL falhe
+
+![DesktopDarkMode](public\Captura de tela 2025-10-22 125411.png)
+![DesktopLightMode](public\Captura de tela 2025-10-22 125423.png)
+
+> 🔹 O Gallery recebe as imagens dinamicamente do `moods.ts`.  
+> 🔹 Use `moods[selectedMood]` no `App.tsx` para enviar o array correto de URLs para o Gallery.
+
+---
+```const moods: { [key: string]: string[] } = {
+  happy: [
+    "/images/happy1.jpg",
+    "/images/happy2.jpg"
+  ],
+  calm: [
+    "/images/calm1.jpg",
+    "/images/calm2.jpg"
+  ],
+  creative: [
+    "/images/creative1.jpg",
+    "/images/creative2.jpg"
+  ],
+  introspective: [
+    "/images/introspective1.jpg",
+    "/images/introspective2.jpg"
+  ]
+};
+
+export default moods;
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Rodando o projeto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Instale dependências:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+npm install
+
+
